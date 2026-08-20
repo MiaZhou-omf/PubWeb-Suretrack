@@ -54,6 +54,7 @@ select:focus { outline:3px solid rgba(38,89,217,.2); border-color:var(--blue); }
 .state-tile.selected { border:2px solid var(--blue); color:var(--blue); background:#edf2ff; }
 .state-tile.selected span { color:var(--blue-dark); }
 .state-list-wrap { width:100%; padding-top:16px; }
+.list-selector { margin:0 0 20px; }
 .state-list { overflow:hidden; width:100%; border:1px solid #e0e0e0; border-radius:4px; background:#fff; }
 .state-list-row { display:flex; align-items:center; justify-content:space-between; gap:24px; min-height:48px; padding:13px 20px; border-top:1px solid #f0f0f0; color:#1a1a1a; background:#fff; font-family:"Source Sans 3",Arial,sans-serif; }
 .state-list-row:first-child { border-top:0; }

@@ -55,6 +55,12 @@ export default function Home() {
     () => [...states, ...gridStates].find((state) => state.code === stateCode) ?? states[21],
     [stateCode],
   );
+  const selectAndJumpToState = (nextStateCode: string) => {
+    setStateCode(nextStateCode);
+    window.setTimeout(() => {
+      document.getElementById(`state-row-${nextStateCode}`)?.scrollIntoView({ behavior: "smooth", block: "center" });
+    }, 0);
+  };
 
   return (
     <div className="site-shell">
@@ -138,10 +144,18 @@ export default function Home() {
             </div>
           ) : (
             <div className="state-list-wrap" data-node-id="1:992">
+              <div className="selector-card list-selector">
+                <div className="step-number" aria-hidden="true">1</div>
+                <div className="select-copy"><label htmlFor="list-state-select">Select your state</label><span>Jump to its sample agreement</span></div>
+                <div className="select-wrap"><select id="list-state-select" value={stateCode} onChange={(event) => selectAndJumpToState(event.target.value)}>
+                  {gridStates.map((state) => <option key={state.code} value={state.code}>{state.name}</option>)}
+                </select></div>
+              </div>
               <div className="state-list">
                 {gridStates.map((state) => (
                   <a
                     className={`state-list-row${state.code === stateCode ? " selected" : ""}`}
+                    id={`state-row-${state.code}`}
                     href={sampleUrl}
                     target="_blank"
                     rel="noreferrer"
