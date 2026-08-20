@@ -40,17 +40,34 @@ export default function Home() {
     <div className="site-shell">
       <a className="skip-link" href="#main-content">Skip to main content</a>
       <header className="site-header">
-        <a className="brand" href="#" aria-label="OneMain Financial home">
-          <span className="brand-mark" aria-hidden="true"><i/><i/><i/></span>
-          <span><strong>OneMain</strong> Financial</span>
-        </a>
-        <nav aria-label="Primary navigation">
-          <a href="#documents">Personal Loans</a><a href="#documents">Credit Cards</a>
-          <a href="#footer">Branches</a><a href="#footer">Resources</a>
-        </nav>
-        <div className="header-actions">
-          <a className="offer-button" href="#documents">Check for offers</a>
-          <a className="login-link" href="#footer">Log in <span aria-hidden="true">→</span></a>
+        <div className="desktop-navi" data-node-id="1:4">
+          <div className="navi-logo-cell">
+            <a href="https://www.onemainfinancial.com/" aria-label="OneMain Financial home">
+              <img src="/branding/onemain-logo-desktop.svg" alt="OneMain Financial" width="112" height="44"/>
+            </a>
+          </div>
+          <nav aria-label="Primary navigation">
+            <a href="https://www.onemainfinancial.com/personal-loans">Personal Loans</a>
+            <a href="https://www.onemainfinancial.com/credit-cards">Credit Cards</a>
+            <a href="https://www.onemainfinancial.com/branches">Branches</a>
+            <a href="https://www.onemainfinancial.com/personal-loans/resources">Resources</a>
+          </nav>
+          <div className="header-actions">
+            <a className="offer-button" href="https://www.onemainfinancial.com/prequalification">Check for offers</a>
+            <a className="login-button" href="https://www.onemainfinancial.com/log-in">
+              <img src="/branding/login-icon.svg" alt="" width="24" height="24"/>
+              <span>Log in</span>
+            </a>
+          </div>
+        </div>
+        <div className="mobile-navi" data-node-id="1:205">
+          <a href="https://www.onemainfinancial.com/" aria-label="OneMain Financial home">
+            <img src="/branding/onemain-logo-mobile.svg" alt="OneMain Financial" width="111" height="43"/>
+          </a>
+          <button className="menu-button" type="button" aria-label="Open menu">
+            <img src="/branding/menu-icon.svg" alt="" width="24" height="24"/>
+            <span>Menu</span>
+          </button>
         </div>
       </header>
 
@@ -100,7 +117,7 @@ export default function Home() {
 
       <footer id="footer">
         <div className="footer-top">
-          <a className="brand footer-brand" href="#" aria-label="OneMain Financial home"><span className="brand-mark" aria-hidden="true"><i/><i/><i/></span><span><strong>OneMain</strong> Financial</span></a>
+          <a className="footer-brand" href="https://www.onemainfinancial.com/" aria-label="OneMain Financial home"><img src="/branding/onemain-logo-inverted.svg" alt="OneMain Financial" width="216" height="20"/></a>
           <div className="footer-links">
             <div><strong>Products</strong><a href="#documents">Personal loans</a><a href="#documents">Credit cards</a></div>
             <div><strong>Company</strong><a href="#footer">About us</a><a href="#footer">Careers</a></div>
