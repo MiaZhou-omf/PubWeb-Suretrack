@@ -49,7 +49,7 @@ function ArrowIcon({ direction = "down" }: { direction?: "down" | "out" }) {
 }
 
 export default function Home() {
-  const [designOption, setDesignOption] = useState<"dropdown" | "grid">("grid");
+  const [designOption, setDesignOption] = useState<"dropdown" | "grid" | "list">("list");
   const [stateCode, setStateCode] = useState("KY");
   const selectedState = useMemo(
     () => [...states, ...gridStates].find((state) => state.code === stateCode) ?? states[21],
@@ -100,9 +100,10 @@ export default function Home() {
         <section className="content" id="documents">
           <div className="version-picker">
             <label htmlFor="design-option">View design</label>
-            <select id="design-option" value={designOption} onChange={(event) => setDesignOption(event.target.value as "dropdown" | "grid")}>
+            <select id="design-option" value={designOption} onChange={(event) => setDesignOption(event.target.value as "dropdown" | "grid" | "list")}>
               <option value="dropdown">Option 1 — State dropdown</option>
               <option value="grid">Option 2 — State grid</option>
+              <option value="list">Option 3 — State list (no preview)</option>
             </select>
           </div>
           <div className="intro">
@@ -118,7 +119,7 @@ export default function Home() {
                 {states.map((state) => <option key={state.code} value={state.code}>{state.name}</option>)}
               </select></div>
             </div>
-          ) : (
+          ) : designOption === "grid" ? (
             <div className="state-grid-wrap" data-node-id="1:989">
               <div className="state-grid" data-node-id="1:440">
                 {gridStates.map((state) => (
@@ -135,9 +136,33 @@ export default function Home() {
                 ))}
               </div>
             </div>
+          ) : (
+            <div className="state-list-wrap" data-node-id="1:992">
+              <div className="state-list">
+                {gridStates.map((state) => (
+                  <a
+                    className={`state-list-row${state.code === stateCode ? " selected" : ""}`}
+                    href={sampleUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    key={state.code}
+                    onClick={() => setStateCode(state.code)}
+                    aria-label={`View ${state.name} sample loan agreement in a new window`}
+                  >
+                    <span className="state-list-label">
+                      <strong>{state.code}</strong>
+                      <span>{state.name} — Sample Loan Agreement &amp; Disclosure Statement</span>
+                    </span>
+                    <span className="state-list-action">View <span aria-hidden="true">→</span></span>
+                  </a>
+                ))}
+              </div>
+              <p className="list-disclaimer">The same sample PDF is currently used for every listed state. Your actual agreement and disclosures may vary by state.</p>
+            </div>
           )}
 
-          <section className="document-card" aria-live="polite">
+          {designOption !== "list" && <>
+            <section className="document-card" aria-live="polite">
               <div className="document-summary">
                 <div className="document-icon"><DocumentIcon/></div>
                 <div>
@@ -155,9 +180,10 @@ export default function Home() {
                 <a href={sampleUrl} target="_blank" rel="noreferrer">Open full screen</a>
               </div>
               <div className="pdf-frame-wrap"><iframe className="pdf-frame" src={`${sampleUrl}#view=FitH&toolbar=1`} title={`${selectedState.name} sample loan agreement PDF preview`}/></div>
-          </section>
+            </section>
 
-          <aside className="legal-note"><strong>Please note</strong><p>The same sample PDF is shown for every state and is provided for general informational purposes only. It is not an offer of credit. The rates, fees, terms, and disclosures in your actual loan agreement will depend on your state and approved loan terms.</p></aside>
+            <aside className="legal-note"><strong>Please note</strong><p>The same sample PDF is shown for every state and is provided for general informational purposes only. It is not an offer of credit. The rates, fees, terms, and disclosures in your actual loan agreement will depend on your state and approved loan terms.</p></aside>
+          </>}
         </section>
       </main>
 
