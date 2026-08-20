@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 
-type StateOption = { name: string; code: string; available?: boolean };
+type StateOption = { name: string; code: string };
 
 const states: StateOption[] = [
   { name: "Alabama", code: "AL" }, { name: "Arizona", code: "AZ" },
@@ -15,7 +15,7 @@ const states: StateOption[] = [
   { name: "Maryland", code: "MD" }, { name: "Michigan", code: "MI" },
   { name: "Minnesota", code: "MN" }, { name: "Mississippi", code: "MS" },
   { name: "Missouri", code: "MO" }, { name: "Nebraska", code: "NE" },
-  { name: "Nevada", code: "NV" }, { name: "New Jersey", code: "NJ", available: true },
+  { name: "Nevada", code: "NV" }, { name: "New Jersey", code: "NJ" },
   { name: "New York", code: "NY" }, { name: "North Carolina", code: "NC" },
   { name: "Ohio", code: "OH" },
 ];
@@ -63,7 +63,7 @@ export default function Home() {
         <section className="content" id="documents">
           <div className="intro">
             <h2>Choose your state</h2>
-            <p>Loan terms and disclosures can vary by state. Select your state to make sure you view the correct sample agreement for where you live.</p>
+            <p>Loan terms and disclosures can vary by state. Select your state to view a sample agreement. The same general example is currently provided for all 25 states.</p>
           </div>
 
           <div className="selector-card">
@@ -74,14 +74,13 @@ export default function Home() {
             </select></div>
           </div>
 
-          {selectedState.available ? (
-            <section className="document-card" aria-live="polite">
+          <section className="document-card" aria-live="polite">
               <div className="document-summary">
                 <div className="document-icon"><DocumentIcon/></div>
                 <div>
                   <p className="document-kicker">{selectedState.name} · PDF · 6 pages</p>
                   <h3>Sample Loan Agreement and Disclosure Statement</h3>
-                  <p className="sample-note">Sample document for illustration only. Your final agreement may differ.</p>
+                  <p className="sample-note">General example used for all listed states. Your actual state-specific agreement may differ.</p>
                 </div>
               </div>
               <div className="document-actions" aria-label="Document options">
@@ -93,17 +92,9 @@ export default function Home() {
                 <a href={sampleUrl} target="_blank" rel="noreferrer">Open full screen</a>
               </div>
               <div className="pdf-frame-wrap"><iframe className="pdf-frame" src={`${sampleUrl}#view=FitH&toolbar=1`} title={`${selectedState.name} sample loan agreement PDF preview`}/></div>
-            </section>
-          ) : (
-            <section className="unavailable-card" aria-live="polite">
-              <div className="document-icon muted"><DocumentIcon/></div>
-              <div><p className="document-kicker">{selectedState.name}</p><h3>State-specific sample coming soon</h3>
-                <p>The {selectedState.name} PDF has not been supplied for this prototype. Choose New Jersey to preview the provided sample document.</p>
-              </div>
-            </section>
-          )}
+          </section>
 
-          <aside className="legal-note"><strong>Please note</strong><p>This sample is for general informational purposes only and is not an offer of credit. The rates, fees, terms, and disclosures in your actual loan agreement will depend on your state and approved loan terms.</p></aside>
+          <aside className="legal-note"><strong>Please note</strong><p>The same sample PDF is shown for every state and is provided for general informational purposes only. It is not an offer of credit. The rates, fees, terms, and disclosures in your actual loan agreement will depend on your state and approved loan terms.</p></aside>
         </section>
       </main>
 
