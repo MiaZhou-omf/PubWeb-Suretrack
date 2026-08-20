@@ -1,0 +1,124 @@
+"use client";
+
+import { useMemo, useState } from "react";
+
+type StateOption = { name: string; code: string; available?: boolean };
+
+const states: StateOption[] = [
+  { name: "Alabama", code: "AL" }, { name: "Arizona", code: "AZ" },
+  { name: "California", code: "CA" }, { name: "Colorado", code: "CO" },
+  { name: "Delaware", code: "DE" }, { name: "Florida", code: "FL" },
+  { name: "Georgia", code: "GA" }, { name: "Idaho", code: "ID" },
+  { name: "Illinois", code: "IL" }, { name: "Indiana", code: "IN" },
+  { name: "Iowa", code: "IA" }, { name: "Kansas", code: "KS" },
+  { name: "Kentucky", code: "KY" }, { name: "Louisiana", code: "LA" },
+  { name: "Maryland", code: "MD" }, { name: "Michigan", code: "MI" },
+  { name: "Minnesota", code: "MN" }, { name: "Mississippi", code: "MS" },
+  { name: "Missouri", code: "MO" }, { name: "Nebraska", code: "NE" },
+  { name: "Nevada", code: "NV" }, { name: "New Jersey", code: "NJ", available: true },
+  { name: "New York", code: "NY" }, { name: "North Carolina", code: "NC" },
+  { name: "Ohio", code: "OH" },
+];
+
+const sampleUrl = "/sample-loan-agreements/NJSTLA0726.pdf";
+
+function DocumentIcon() {
+  return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 2.75h6.8L19 7.95v13.3H7z"/><path d="M13.5 2.75v5.5H19M9.5 12h7M9.5 15h7M9.5 18h4.5"/></svg>;
+}
+
+function ArrowIcon({ direction = "down" }: { direction?: "down" | "out" }) {
+  return direction === "out"
+    ? <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 13v6H5V6h6"/></svg>
+    : <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7 11l5 5 5-5M5 20h14"/></svg>;
+}
+
+export default function Home() {
+  const [stateCode, setStateCode] = useState("NJ");
+  const selectedState = useMemo(() => states.find((state) => state.code === stateCode) ?? states[21], [stateCode]);
+
+  return (
+    <div className="site-shell">
+      <a className="skip-link" href="#main-content">Skip to main content</a>
+      <header className="site-header">
+        <a className="brand" href="#" aria-label="OneMain Financial home">
+          <span className="brand-mark" aria-hidden="true"><i/><i/><i/></span>
+          <span><strong>OneMain</strong> Financial</span>
+        </a>
+        <nav aria-label="Primary navigation">
+          <a href="#documents">Personal Loans</a><a href="#documents">Credit Cards</a>
+          <a href="#footer">Branches</a><a href="#footer">Resources</a>
+        </nav>
+        <div className="header-actions">
+          <a className="offer-button" href="#documents">Check for offers</a>
+          <a className="login-link" href="#footer">Log in <span aria-hidden="true">→</span></a>
+        </div>
+      </header>
+
+      <main id="main-content">
+        <section className="title-band"><div>
+          <p className="eyebrow">Legal documents</p>
+          <h1>Sample Loan Agreement<br className="mobile-break"/> and Disclosure Statement</h1>
+        </div></section>
+
+        <section className="content" id="documents">
+          <div className="intro">
+            <h2>Choose your state</h2>
+            <p>Loan terms and disclosures can vary by state. Select your state to make sure you view the correct sample agreement for where you live.</p>
+          </div>
+
+          <div className="selector-card">
+            <div className="step-number" aria-hidden="true">1</div>
+            <div className="select-copy"><label htmlFor="state-select">Select your state</label><span>25 states available</span></div>
+            <div className="select-wrap"><select id="state-select" value={stateCode} onChange={(event) => setStateCode(event.target.value)}>
+              {states.map((state) => <option key={state.code} value={state.code}>{state.name}</option>)}
+            </select></div>
+          </div>
+
+          {selectedState.available ? (
+            <section className="document-card" aria-live="polite">
+              <div className="document-summary">
+                <div className="document-icon"><DocumentIcon/></div>
+                <div>
+                  <p className="document-kicker">{selectedState.name} · PDF · 6 pages</p>
+                  <h3>Sample Loan Agreement and Disclosure Statement</h3>
+                  <p className="sample-note">Sample document for illustration only. Your final agreement may differ.</p>
+                </div>
+              </div>
+              <div className="document-actions" aria-label="Document options">
+                <a className="primary-action" href={sampleUrl} target="_blank" rel="noreferrer">Preview in new window <ArrowIcon direction="out"/></a>
+                <a className="secondary-action" href={sampleUrl} download="NJ-Sample-Loan-Agreement.pdf">Download PDF <ArrowIcon/></a>
+              </div>
+              <div className="preview-heading">
+                <div><span className="status-dot" aria-hidden="true"/>Previewing {selectedState.name} sample</div>
+                <a href={sampleUrl} target="_blank" rel="noreferrer">Open full screen</a>
+              </div>
+              <div className="pdf-frame-wrap"><iframe className="pdf-frame" src={`${sampleUrl}#view=FitH&toolbar=1`} title={`${selectedState.name} sample loan agreement PDF preview`}/></div>
+            </section>
+          ) : (
+            <section className="unavailable-card" aria-live="polite">
+              <div className="document-icon muted"><DocumentIcon/></div>
+              <div><p className="document-kicker">{selectedState.name}</p><h3>State-specific sample coming soon</h3>
+                <p>The {selectedState.name} PDF has not been supplied for this prototype. Choose New Jersey to preview the provided sample document.</p>
+              </div>
+            </section>
+          )}
+
+          <aside className="legal-note"><strong>Please note</strong><p>This sample is for general informational purposes only and is not an offer of credit. The rates, fees, terms, and disclosures in your actual loan agreement will depend on your state and approved loan terms.</p></aside>
+        </section>
+      </main>
+
+      <footer id="footer">
+        <div className="footer-top">
+          <a className="brand footer-brand" href="#" aria-label="OneMain Financial home"><span className="brand-mark" aria-hidden="true"><i/><i/><i/></span><span><strong>OneMain</strong> Financial</span></a>
+          <div className="footer-links">
+            <div><strong>Products</strong><a href="#documents">Personal loans</a><a href="#documents">Credit cards</a></div>
+            <div><strong>Company</strong><a href="#footer">About us</a><a href="#footer">Careers</a></div>
+            <div><strong>Legal</strong><a href="#documents">Loan agreements</a><a href="#footer">Legal & privacy</a></div>
+            <div><strong>Support</strong><a href="#footer">Help Center</a><a href="#footer">Contact us</a></div>
+          </div>
+        </div>
+        <div className="footer-bottom"><p>Sample page for demonstration purposes.</p><p>© 2026 OneMain Holdings, Inc. All rights reserved.</p></div>
+      </footer>
+    </div>
+  );
+}
