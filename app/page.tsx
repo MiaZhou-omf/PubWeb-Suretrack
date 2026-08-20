@@ -20,6 +20,22 @@ const states: StateOption[] = [
   { name: "Ohio", code: "OH" },
 ];
 
+const gridStates: StateOption[] = [
+  { name: "Alabama", code: "AL" }, { name: "Arizona", code: "AZ" },
+  { name: "Arkansas", code: "AR" }, { name: "California", code: "CA" },
+  { name: "Colorado", code: "CO" }, { name: "Florida", code: "FL" },
+  { name: "Georgia", code: "GA" }, { name: "Idaho", code: "ID" },
+  { name: "Illinois", code: "IL" }, { name: "Indiana", code: "IN" },
+  { name: "Kansas", code: "KS" }, { name: "Kentucky", code: "KY" },
+  { name: "Louisiana", code: "LA" }, { name: "Maryland", code: "MD" },
+  { name: "Michigan", code: "MI" }, { name: "Minnesota", code: "MN" },
+  { name: "Missouri", code: "MO" }, { name: "Nebraska", code: "NE" },
+  { name: "Nevada", code: "NV" }, { name: "New Jersey", code: "NJ" },
+  { name: "New Mexico", code: "NM" }, { name: "North Carolina", code: "NC" },
+  { name: "Ohio", code: "OH" }, { name: "Oklahoma", code: "OK" },
+  { name: "Oregon", code: "OR" },
+];
+
 const sampleUrl = "/sample-loan-agreements/NJSTLA0726.pdf";
 
 function DocumentIcon() {
@@ -33,8 +49,12 @@ function ArrowIcon({ direction = "down" }: { direction?: "down" | "out" }) {
 }
 
 export default function Home() {
-  const [stateCode, setStateCode] = useState("NJ");
-  const selectedState = useMemo(() => states.find((state) => state.code === stateCode) ?? states[21], [stateCode]);
+  const [designOption, setDesignOption] = useState<"dropdown" | "grid">("grid");
+  const [stateCode, setStateCode] = useState("KY");
+  const selectedState = useMemo(
+    () => [...states, ...gridStates].find((state) => state.code === stateCode) ?? states[21],
+    [stateCode],
+  );
 
   return (
     <div className="site-shell">
@@ -78,18 +98,44 @@ export default function Home() {
         </div></section>
 
         <section className="content" id="documents">
+          <div className="version-picker">
+            <label htmlFor="design-option">View design</label>
+            <select id="design-option" value={designOption} onChange={(event) => setDesignOption(event.target.value as "dropdown" | "grid")}>
+              <option value="dropdown">Option 1 — State dropdown</option>
+              <option value="grid">Option 2 — State grid</option>
+            </select>
+          </div>
           <div className="intro">
             <h2>Choose your state</h2>
             <p>Loan terms and disclosures can vary by state. Select your state to view a sample agreement. The same general example is currently provided for all 25 states.</p>
           </div>
 
-          <div className="selector-card">
-            <div className="step-number" aria-hidden="true">1</div>
-            <div className="select-copy"><label htmlFor="state-select">Select your state</label><span>25 states available</span></div>
-            <div className="select-wrap"><select id="state-select" value={stateCode} onChange={(event) => setStateCode(event.target.value)}>
-              {states.map((state) => <option key={state.code} value={state.code}>{state.name}</option>)}
-            </select></div>
-          </div>
+          {designOption === "dropdown" ? (
+            <div className="selector-card">
+              <div className="step-number" aria-hidden="true">1</div>
+              <div className="select-copy"><label htmlFor="state-select">Select your state</label><span>25 states available</span></div>
+              <div className="select-wrap"><select id="state-select" value={stateCode} onChange={(event) => setStateCode(event.target.value)}>
+                {states.map((state) => <option key={state.code} value={state.code}>{state.name}</option>)}
+              </select></div>
+            </div>
+          ) : (
+            <div className="state-grid-wrap" data-node-id="1:989">
+              <div className="state-grid" data-node-id="1:440">
+                {gridStates.map((state) => (
+                  <button
+                    className={`state-tile${state.code === stateCode ? " selected" : ""}`}
+                    type="button"
+                    key={state.code}
+                    onClick={() => setStateCode(state.code)}
+                    aria-pressed={state.code === stateCode}
+                  >
+                    <strong>{state.code}</strong>
+                    <span>{state.name}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
 
           <section className="document-card" aria-live="polite">
               <div className="document-summary">
